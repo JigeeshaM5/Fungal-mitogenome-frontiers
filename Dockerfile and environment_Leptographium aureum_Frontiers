@@ -1,0 +1,30 @@
+FROM continuumio/miniconda3
+
+WORKDIR /app
+
+COPY environment.yml .
+RUN conda env create -f environment.yml
+SHELL ["/bin/bash", "-c"]
+RUN echo "conda activate mitoenv" >> ~/.bashrc
+
+COPY . .
+ENTRYPOINT ["snakemake", "--cores", "4"]
+
+name: mitoenv
+dependencies:
+  - python=3.10
+  - biopython
+  - pandas
+  - numpy
+  - fastqc
+  - spades
+  - blast
+  - getorganelle
+  - mafft
+  - r-base
+  - r-tidyverse
+  - r-igraph
+  - r-ggraph
+  - r-data.table
+  - r-viridis
+  - r-dplyr
