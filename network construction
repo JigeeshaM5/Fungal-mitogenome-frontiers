@@ -1,8 +1,4 @@
-#This script uses the results from BLASTn to build similarity networks.  
-
-#******************************************************************************#
-#                            Run the code in R		                           #
-#******************************************************************************#
+# This script uses the results from BLASTn to build similarity networks.
 
 library(tidygraph)
 library(data.table)
@@ -13,7 +9,7 @@ library(viridis)
 
 acc <- fread("accessions.m.txt")
 dup <- fread("duplicated.blastn.r.txt")
-dup <- dup %>% dplyr::group_by(V1,V2) %>% slice(which.max(V4))  #keep largest alignment 
+dup <- dup %>% dplyr::group_by(V1,V2) %>% slice(which.max(V4))
 dup <- dup[,1:3]
 colnames(dup) <- c("from","to","weight")
 dup <- subset(dup, dup$from != dup$to)
@@ -42,7 +38,7 @@ ggsave("duplicated.mitogenomes.blastn.network.connectedonly.sacc.edgeviridis-lin
 
 acc <- fread("filos.txt")
 all <- fread("general.blastn.r.txt")
-all <- all %>% dplyr::group_by(V1,V2) %>% slice(which.max(V4)) #keep largest alignment 
+all <- all %>% dplyr::group_by(V1,V2) %>% slice(which.max(V4))
 all <- all[,1:3]
 colnames(all) <- c("from","to","weight")
 all <- subset(all, all$from != all$to)
@@ -53,7 +49,6 @@ all <- left_join(all, acc, by=c("from"="Accession_number"))
 colnames(all) <- c("from","to","weight","Phylum")
 NAs <- subset(all, is.na(all$Phylum)) 
 NAs <- unique(as.vector(NAs$from))
-
 for (item in NAs){
   all <- subset(all, to!=item)
   all <- subset(all, from!=item)
@@ -70,3 +65,10 @@ ggraph(graph2, layout = 'fr', weights = weight) +
   theme_void() + scale_edge_colour_viridis()
 
 ggsave("general.mitogenomes.blastn.network.connectedonly.noSpiz.byfilo_v2.edgeviridis.pdf",width=7,height=5)
+
+#!/bin/bash
+
+# Usage: ./run_blastn_networks.sh
+
+Rscript blastn_networks.R
+
