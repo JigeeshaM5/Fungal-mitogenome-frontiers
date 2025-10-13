@@ -1,23 +1,52 @@
-# This script correctly computes GC content and length of a sequence in FASTA format, or multiple sequences in a multi-FASTA file.  
+#!/usr/bin/env python3
 
-#******************************************************************************#
-#                            Run the code in Python3                           #
-#******************************************************************************#
-
+import argparse
 from Bio import SeqIO
-from Bio.Seq import Seq
-from Bio.SeqUtils import GC
+from Bio.SeqUtils import gc_fraction
 
-# Defines a function that takes an input file containing sequences in the .fasta format,
-# calculates the length and GC content of every sequence and saves the result in an output file
-def lenGC(input_f,output_f):
-    sequences = list(SeqIO.parse(input_f,"fasta")) #Creates a list containing sequences in .fasta format
-    for item in sequences: #For every sequence in the list
-        print(f"{item.description}\t{len(item.seq)}\t{GC(item.seq)}") #Prints its ID, length, and GC content
-        output_f.write(f"{item.description}\t{len(item.seq)}\t{GC(item.seq)}\n") #Writes its ID, length, and GC content in the output file
+def len_gc(input_path, output_path):
+    with open(output_path, "a") as output_file:
+        for record in SeqIO.parse(input_path, "fasta"):
+            seq_len = len(record.seq)
+            gc_content = round(gc_fraction(record.seq) * 100, 2)
+            output_file.write(f"{record.description}\t{seq_len}\t{gc_content}\n")
+            print(f"{record.description}\t{seq_len}\t{gc_content}")
 
-input_file2= #Takes the name of the input file
-input_file=open(f"{input_file2}","r")
-output_file=open(f"{input_file2}"+"_lenGC.txt","a") #Opens output file in append mode
-lenGC(input_file,output_file) #Runs lenGC function
-output_file.close() #Closes output file
+def main():
+    parser = argparse.ArgumentParser(description="Compute length and GC content of FASTA sequences.")
+    parser.add_argument("input", help="Input FASTA file")
+    parser.add_argument("output", help="Output file to write results")
+    args = parser.parse_args()
+    len_gc(args.input, args.output)
+
+if __name__ == "__main__":
+    main()
+
+#!/bin/bash
+
+# Usage: ./run_len_gc.sh input.fasta
+# Output will be saved as input_lenGC.txt
+
+INPUT_FILE="$1"
+OUTPUT_FILE="${INPUT_FILE%.*}_lenGC.txt"
+
+if [[ -z "$INPUT_FILE" ]]; then
+  echo "Usage: $0 <input_fasta_file>"
+  exit 1
+fi
+
+
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY len_gc.py .
+COPY run_len_gc.sh .
+RUN chmod +x run_len_gc.sh
+
+
+
