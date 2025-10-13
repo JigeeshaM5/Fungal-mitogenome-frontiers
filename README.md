@@ -1,3 +1,108 @@
+🧬 Mitogenome Analysis Pipeline Overview
+This repository contains a reproducible and modular pipeline for the assembly, annotation, and phylogenetic analysis of fungal mitochondrial genomes, aligned with the methods described in our publication.
+🔧 Pipeline Structure
+The pipeline is built using Snakemake, Docker, and Python/R scripts, and is organized into the following stages:
+
+
+Assembly
+
+Tools: SPAdes, A5-miseq, GetOrganelle
+Config: config/assembly.yaml
+Input: Illumina reads from strains WIN(M)809, WIN(M)1600, WIN(M)1376
+Output: Assembled contigs and mitochondrial genome candidates
+
+
+
+Annotation
+
+Tools: MFannot, RNAweasel, tRNAscan-SE
+Config: config/annotation.yaml
+Output: Annotated GFF files and tRNA predictions
+
+
+
+BLASTn Search
+
+Tool: NCBI BLAST+
+Config: config/blast.yaml
+Purpose: Identify ITS and beta-tubulin sequences, and validate mtDNA contigs
+Marker references:
+
+ITS: OR146620, OR146621, OR146622
+β-tubulin: OR146617, OR146618, OR146619
+mtDNA: OQ851464, OQ851465, OQ851466
+
+
+
+
+
+Visualization
+
+Tools: Bandage, Circos
+Config: config/visualization.yaml
+Output: Assembly graphs and circular genome plots with exon/intron and GC content
+
+
+
+Phylogenetic Analysis
+
+Tools: MAFFT, MrBayes, MEGA XI
+Config: config/phylogeny.yaml
+Input: Concatenated amino acid alignments of 13 mitochondrial protein-coding genes
+Output: Bayesian and ML phylogenetic trees
+MrBayes input: scripts/phylo.nex
+
+
+
+
+📂 Configuration Files
+Each pipeline module is controlled by a dedicated YAML file:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Config FilePurposeassembly.yamlControls read input and assembly parametersannotation.yamlSets annotation tools and genetic codeblast.yamlDefines BLAST search parameters and marker referencesvisualization.yamlConfigures Bandage and Circos plotsphylogeny.yamlSets alignment and tree-building parameters
+These are linked together via a master config file: config/config.yaml
+
+📁 Data Sources
+All GenBank accessions referenced in the pipeline:
+
+
+Mitochondrial genomes:
+OQ851464, OQ851465, OQ851466
+OR146620, OR146621, OR146622
+OR146617, OR146618, OR146619
+OR271575, OR271576, OR271577
+
+
+
+
+
 # FASTA GC Content & Length Calculator
 
 This tool computes the length and GC content of sequences in a FASTA or multi-FASTA file.
