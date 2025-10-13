@@ -1,0 +1,16 @@
+mafft:
+  input: "data/concatenated_proteins.fasta"
+  output: "results/phylogeny/aligned.fasta"
+
+mrbayes:
+  input: "results/phylogeny/aligned.fasta"
+  generations: 2000000
+  sample_freq: 1000
+  burnin: 0.25
+  model: "mixed"
+  output_tree: "results/phylogeny/mito_tree.nwk"
+
+mega:
+  model: "LG+I+F"
+  bootstrap: 1000
+  output_tree: "results/phylogeny/mito_tree_megatree.nwk"
