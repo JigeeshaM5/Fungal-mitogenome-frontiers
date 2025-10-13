@@ -33,3 +33,23 @@ This tool extracts upstream open reading frames (uORFs) from annotated mitochond
 
 
 ./run_uorf_extractor.sh path/to/mfannot_output.new
+
+# Genic Region Length Calculator
+
+This tool calculates the total genic/coding region length of mitochondrial genomes from coordinate files, excluding overlapping regions.
+
+## Features
+
+- Parses genomic coordinate files (BED-like format)
+- Computes total non-overlapping genic region length
+- Supports batch processing of multiple files
+- Includes Bash and Docker support for automation and portability
+
+## Usage
+
+### Locally
+
+
+mkdir -p input output
+# Place your coordinate files in the 'input' folder
+./run_genic_calc.sh
