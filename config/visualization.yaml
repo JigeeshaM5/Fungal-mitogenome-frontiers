@@ -1,0 +1,9 @@
+bandage:
+  input_graph: "results/assembly/spades/assembly_graph.gfa"
+  output_image: "results/visualization/bandage_graph.png"
+
+circos:
+  input_gff: "results/annotation/annotated_mtDNA.gff"
+  gc_window: 100
+  gc_step: 20
+  output_image: "results/visualization/circos_plot.png"
