@@ -1,0 +1,54 @@
+rule all:
+    input:
+        "results/assembly/spades_output.fasta",
+        "results/annotation/annotated_mtDNA.gff",
+        "results/blast/blast_hits.txt",
+        "results/phylogeny/mito_tree.nwk"
+
+rule fastqc:
+    input:
+        "data/reads.fastq"
+    output:
+        "results/qc/fastqc_report.html"
+    shell:
+        "fastqc {input} -o results/qc"
+
+rule spades_assembly:
+    input:
+        "data/reads.fastq"
+    output:
+        "results/assembly/spades_output.fasta"
+    shell:
+        "spades.py --careful -o results/assembly --12 {input}"
+
+rule getorganelle:
+    input:
+        "data/reads.fastq"
+    output:
+        "results/assembly/mito_contigs.fasta"
+    shell:
+        "get_organelle_from_reads.py -F fungus_mt -o results/assembly -1 {input}"
+
+rule annotation:
+    input:
+        "results/assembly/mito_contigs.fasta"
+    output:
+        "results/annotation/annotated_mtDNA.gff"
+    shell:
+        "python scripts/run_mfannot.py {input} > {output}"
+
+rule blast_search:
+    input:
+        "results/assembly/spades_output.fasta"
+    output:
+        "results/blast/blast_hits.txt"
+    shell:
+        "blastn -query {input} -db nt -out {output} -outfmt 6"
+
+rule phylogeny:
+    input:
+        "data/aligned_proteins.fasta"
+    output:
+        "results/phylogeny/mito_tree.nwk"
+    shell:
+        "mb phylo.nex"
