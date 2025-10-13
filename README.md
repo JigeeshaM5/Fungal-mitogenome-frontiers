@@ -53,3 +53,17 @@ This tool calculates the total genic/coding region length of mitochondrial genom
 mkdir -p input output
 # Place your coordinate files in the 'input' folder
 ./run_genic_calc.sh
+
+Generates two PDF network visualizations:
+
+duplicated.mitogenomes.blastn.network.connectedonly.sacc.edgeviridis-link-reducednode.pdf
+general.mitogenomes.blastn.network.connectedonly.noSpiz.byfilo_v2.edgeviridis.pdf
+
+Extended Description
+This repository demonstrates advanced network analysis and visualization using:
+
+R and the tidyverse ecosystem
+tidygraph, ggraph, and igraph for network construction
+data.table and dplyr for efficient data manipulation
+Bash scripting for CLI automation
+Docker for reproducible and portable execution
