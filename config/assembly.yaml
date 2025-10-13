@@ -1,0 +1,16 @@
+reads:
+  sample1: "data/WIN_M809.fastq"
+  sample2: "data/WIN_M1600.fastq"
+  sample3: "data/WIN_M1376.fastq"
+
+spades:
+  careful: true
+  output_dir: "results/assembly/spades"
+
+a5_miseq:
+  end: 5
+  output_dir: "results/assembly/a5"
+
+getorganelle:
+  organelle_type: "fungus_mt"
+  output_dir: "results/assembly/getorganelle"
