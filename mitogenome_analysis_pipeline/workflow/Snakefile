@@ -1,0 +1,78 @@
+import yaml
+
+# Load modular config files
+config_files = [
+    "config/assembly.yaml",
+    "config/annotation.yaml",
+    "config/blast.yaml",
+    "config/visualization.yaml",
+    "config/phylogeny.yaml"
+]
+
+for file in config_files:
+    with open(file) as f:
+        cfg = yaml.safe_load(f)
+        config.update(cfg)
+
+rule all:
+    input:
+        config["spades"]["output_dir"] + "/spades_output.fasta",
+        config["mfannot"]["output_gff"],
+        config["blastn"]["output"],
+        config["mrbayes"]["output_tree"]
+
+rule fastqc:
+    input:
+        config["reads"]["sample1"]
+    output:
+        "results/qc/fastqc_sample1.html"
+    shell:
+        "fastqc {input} -o results/qc"
+
+rule spades:
+    input:
+        config["reads"]["sample1"]
+    output:
+        config["spades"]["output_dir"] + "/spades_output.fasta"
+    shell:
+        "spades.py --careful -o {config[spades][output_dir]} --12 {input}"
+
+rule getorganelle:
+    input:
+        config["reads"]["sample1"]
+    output:
+        config["getorganelle"]["output_dir"] + "/mito_contigs.fasta"
+    shell:
+        "get_organelle_from_reads.py -F {config[getorganelle][organelle_type]} -o {config[getorganelle][output_dir]} -1 {input}"
+
+rule annotation:
+    input:
+        config["mfannot"]["input_fasta"]
+    output:
+        config["mfannot"]["output_gff"]
+    shell:
+        "python scripts/run_mfannot.py {input} > {output}"
+
+rule blast:
+    input:
+        config["blastn"]["query"]
+    output:
+        config["blastn"]["output"]
+    shell:
+        "blastn -query {input} -db {config[blastn][db]} -out {output} -outfmt {config[blastn][outfmt]}"
+
+rule mafft:
+    input:
+        config["mafft"]["input"]
+    output:
+        config["mafft"]["output"]
+    shell:
+        "mafft --auto {input} > {output}"
+
+rule mrbayes:
+    input:
+        config["mrbayes"]["input"]
+    output:
+        config["mrbayes"]["output_tree"]
+    shell:
+        "mb scripts/phylo.nex"
