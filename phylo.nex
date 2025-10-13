@@ -1,0 +1,20 @@
+#NEXUS
+
+Begin DATA;
+Dimensions ntax=4 nchar=1000;
+Format datatype=protein gap=-;
+Matrix
+Asp_fumigatus        MNTLS---INTVNFEILSPL...
+Grossmania_1600      MNTLS---INTVNFEILSPL...
+Grossmania_809       MNTLS---INTVNFEILSPL...
+Leptographium_1376   MNTLS---INTVNFEILSPL...
+;
+End;
+
+Begin mrbayes;
+set autoclose=yes;
+lset nst=6 rates=invgamma;
+prset aamodelpr=mixed;
+mcmc ngen=2000000 samplefreq=1000 nchains=4;
+sumt burnin=500;
+End;
