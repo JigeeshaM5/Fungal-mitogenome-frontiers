@@ -1,6 +1,7 @@
 The datasets linked to the paper "Mukhopadhyay, J., Wai, A., & Hausner, G. (2023). The mitogenomes of Leptographium aureum, Leptographium sp., and Grosmannia fruticeta: expansion by introns. Frontiers in microbiology, 14, 1240407. https://doi.org/10.3389/fmicb.2023.1240407" can be found in online repositories.
 
 The names of the repository/repositories and accession number(s) can be found at: 
+
 https://www.ncbi.nlm.nih.gov/genbank/, OQ851464 
 https://www.ncbi.nlm.nih.gov/genbank/, OQ851465 
 https://www.ncbi.nlm.nih.gov/genbank/, OQ851466 
