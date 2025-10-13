@@ -1,0 +1,7 @@
+blastn:
+  query: "results/assembly/spades_output.fasta"
+  db: "nt"
+  outfmt: 6
+  output: "results/blast/blast_hits.txt"
+  mtDNA:
+    - ["OR146620", "OR146621", "OR146622", "OR146617", "OR146618", "OR146619", "OQ851464", "OQ851465", "OQ851466"]
