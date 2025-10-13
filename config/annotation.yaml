@@ -1,0 +1,12 @@
+mfannot:
+  genetic_code: 4
+  input_fasta: "results/assembly/mito_contigs.fasta"
+  output_gff: "results/annotation/annotated_mtDNA.gff"
+
+rnaweasel:
+  predict_tRNAs: true
+  predict_introns: ["GrI", "GrII"]
+
+tRNAscan:
+  version: "2.0"
+  output_file: "results/annotation/tRNAscan.txt"
